@@ -1,4 +1,41 @@
-body{
-    background-color: blue;
-    color: white;
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-nav li {
+  list-style-type: none;
+  margin-right: 1rem;
+}
+
+.left {
+  margin-right: auto;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.right {
+  margin-left: auto;
+}
+
+.navbar-nav li a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+}
+
+.navbar-nav li a:hover {
+  background-color: #ddd;
+}
+
+.navbar .cart-icon img {
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
