@@ -1,4 +1,27 @@
-body{
-    background-color: blue;
-    color: white;
+.navbar .cart-icon img {
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.navbar {
+    padding: 18px;
+}
+
+.navbar-expand-sm .navbar-nav .lk {
+    padding-right: 30px;
+}
+
+.navbar-nav .nav-link {
+    color: gray;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: black;
+}
+
+hr {
+    margin: 0;
+    color: black;
 }
