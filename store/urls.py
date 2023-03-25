@@ -8,4 +8,7 @@ urlpatterns = [
 	path('categories/', views.categories, name="categories"),
 	path('liked/', views.liked, name="liked"),
 	path('profile/', views.profile, name="profile"),
+	path('login/',views.LoginUser.as_view(), name="login"),
+	path('register/',views.RegisterUser.as_view(), name="register"),
+	path('logout/',views.logout_user, name="logout"),
 ]

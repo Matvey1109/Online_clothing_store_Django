@@ -30,9 +30,18 @@
             <li class="nav-item"><a class="nav-link" href="#">Clothes</a></li>
         </ul>
         <ul class="nav navbar-nav w-100 justify-content-end">
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link lk" href="#">Login</a>
+                <a class="nav-link lk" href="{%url 'logout'%}">Log Out</a>
             </li>
+            {%else%}
+            <li class="nav-item">
+                <a class="nav-link lk" href="{%url 'login'%}">Log in</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link lk" href="{% url 'register'%}">Register</a>
+            </li>
+            {%endif%}
             <li class="nav-item">
                 <a class="nav-link lk cart-icon" href="#"><img src="../../static/store/img/shopping-cart.png" alt="Cart Icon">Cart</a>
             </li>
