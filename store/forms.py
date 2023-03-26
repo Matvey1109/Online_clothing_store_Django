@@ -3,11 +3,11 @@ from django import forms
 from .models import *
 
 class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label='UserName', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    fio = forms.CharField(label='FIO', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-input'}))
-    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    username = forms.CharField(label='UserName', widget=forms.TextInput(attrs={'class': 'lf--input', 'placeholder': 'Username'}))
+    fio = forms.CharField(label='FIO', widget=forms.TextInput(attrs={'class': 'lf--input', 'placeholder': 'FIO'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'lf--input', 'placeholder': 'Email'}))
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'lf--input', 'placeholder': 'Password'}))
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput(attrs={'class': 'lf--input', 'placeholder': 'Repeat password'}))
 
     class Meta:
         model = User
@@ -15,5 +15,5 @@ class RegisterUserForm(UserCreationForm):
 
 
 class LoginUserForm(AuthenticationForm):
-    username = forms.CharField(label='UserName', widget=forms.TextInput(attrs={'class': 'form-input'}))
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'lf--input', 'placeholder': 'Username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'lf--input', 'placeholder':'Password'}))
