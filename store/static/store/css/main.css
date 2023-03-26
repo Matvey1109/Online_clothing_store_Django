@@ -34,6 +34,34 @@
     float: right;
 }
 
+.btn-outline-success {
+    background-color: black;
+    color: white;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-outline-success:hover{
+    background-color: gray;
+}
+
+.btn-outline-success:active{
+    background-color: gray;
+}
+
+.btn-dark {
+    padding-top: 2px;
+}
+
+.navbar .btn-dark img {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle;
+}
+
+.form-control .search-input .me-2{
+    font-family: Arial , sans-serif;
+}
+
 hr {
     margin: 0;
     color: black;
