@@ -11,4 +11,6 @@ urlpatterns = [
 	path('login/',views.LoginUser.as_view(), name="login"),
 	path('register/',views.RegisterUser.as_view(), name="register"),
 	path('logout/',views.logout_user, name="logout"),
+	path('<slug:gender_slug>/', views.gender, name = "gender"),
+	path('<slug:gender_slug>/<slug:category_slug>',views.category, name="category")
 ]

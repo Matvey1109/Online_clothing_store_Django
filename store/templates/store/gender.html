@@ -1,0 +1,37 @@
+{% extends 'store/layout.html' %}
+{% load static %}
+{% load store_tags %}
+{% block title %}Categories{% endblock %}
+{% block categories %}
+
+<ul class="nav navbar-nav w-100 flex-nowrap">
+	{% for cat in cats%}
+	<li class="nav-item active">
+		{% getcatsurl gender=gender_selected cat=cat as URL%}
+		<a class="nav-link lk" href="{{URL}}">{{cat.name}}</a>
+	{% endfor %}
+</ul>
+{% endblock %}
+{% block content %}
+
+    <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">
+	<div class="row">
+		{%for product in products%}
+		<div class="col-lg-4">
+			<img class="thumbnail" src="{{product.photo.url}}">
+			<div class="box-element product">
+				<h6><strong>{{product.name}}</strong></h6>
+				<hr>
+
+				<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
+				<a class="btn btn-outline-success" href="#">View</a>
+				<h4 style="display: inline-block; float: right"><strong>${{product.price}}</strong></h4>
+
+			</div>
+		</div>
+		{%endfor%}
+
+
+	</div>
+
+{% endblock %}

@@ -16,7 +16,13 @@
     color: gray;
     transition: color 0.2s ease-in-out;
 }
-
+.navbar-nav .nav-link-selected{
+    color:black;
+    transition: color 0.2s ease-in-out;
+    padding :8px  25px  8px 8px;
+    margin-bottom :0px;
+    text-decoration: underline;
+}
 .nav-link:hover {
     color: black;
 }
