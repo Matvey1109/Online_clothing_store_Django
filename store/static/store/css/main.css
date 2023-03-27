@@ -34,16 +34,6 @@
     float: right;
 }
 
-.btn-outline-success {
-    background-color: black;
-    color: white;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.btn-outline-success:hover{
-    background-color: gray;
-}
-
 .btn-outline-success:active{
     background-color: gray;
 }
