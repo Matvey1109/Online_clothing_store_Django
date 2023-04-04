@@ -46,27 +46,13 @@
                 <a class="nav-link lk icon" href="{% url 'liked' %}"><img src="../../static/store/img/heart.png" alt="Heart Icon">Favorites</a>
             </li>
             <li class="nav-item">
-                {%if not ordered%}
-                    <p class="cart-total">0</p>
-                {%else%}
-                    <p class="cart-total">{{order.products.count}}</p>
-                {%endif%}
+                <p class="cart-total">0</p>
                 <a class="nav-link lk icon" href="{% url 'cart' %}"><img src="../../static/store/img/shopping-cart.png" alt="Cart Icon">Cart</a>
             </li>
         </ul>
     </div>
     </nav>
-    <hr class="nav">
 
-    <nav class="navbar navbar-expand-sm navbar-dark sec-nav">
-    <div class="container justify-content-center">
-        {%block categories%}{% endblock %}
-        <form class="d-flex" role="search">
-        <input class="form-control search-input me-2" type="search" placeholder="Search" aria-label="Search">
-        <button type="button" class="btn btn-dark"><img src="../../static/store/img/loupe.png" alt="Loupe Icon"></button>
-        </form>
-    </div>
-    </nav>
 
     {% block content %}
     {% endblock %}
