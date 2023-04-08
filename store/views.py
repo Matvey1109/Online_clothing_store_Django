@@ -133,11 +133,13 @@ def add_to_cart(request, product_slug):
         #messages.info(request, "This item was added to your cart.")
         return redirect("main")
 
-def change_queantity(request,order_product_pk,plus):
-    orderproduct = OrderProduct.objects.get(pk=order_product_pk)
-    if(plus):
-        orderproduct.quantity += 1
+def change_quantity(request, order_product_pk, plus):
+    order_product = OrderProduct.objects.get(pk=order_product_pk)
+    if plus:
+        order_product.quantity += 1
     else:
-        orderproduct.quantity -= 1
-    orderproduct.save()
+        order_product.quantity -= 1
+        if order_product.quantity == 0:
+            order_product.delete()
+    order_product.save()
     return redirect("cart")
