@@ -126,3 +126,16 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLIC_KEY = "pk_test_51MuzOWFO8xyXT4lxSNPtWf1a6XjaDjElcpqpQ3XVE3UaMfcyDWPBP6Vnjijwf6ATdKoI5gLWG6xYWBjTs9LPLnQ800ag9A4ic5"
+STRIPE_SECRET_KEY = "sk_test_51MuzOWFO8xyXT4lxbZ3IRv7iIqHk0IJ8bcnKyl7HTcbDGmmEDayJgakgsj2vvgEou4R8o5rTBC9NpuwKnx72taNl00BgE47KbI"
+STRIPE_WEBHOOK_SECRET = "whsec_1b7f1ca18c6e4ca2995958d28097e6dfe3d280b1b7b4606a0f0c3696affba753"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'store13313@gmail.com'
+EMAIL_HOST_PASSWORD = 'mivtrldpigflmwll'
+EMAIL_PORT = 587

@@ -1,10 +1,22 @@
+import stripe
+from django.conf import settings
+from django.core.mail import send_mail
+import json
+from django.http import JsonResponse, HttpResponse
+from django.template.context_processors import csrf
+from django.views import View
+from django.views.generic import TemplateView
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse
+
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from stripe.api_resources import charge
+
 from .utils import *
 from .models import *
 from .forms import *
@@ -115,29 +127,161 @@ def add_to_cart(request, product_slug):
     order_product, created = OrderProduct.objects.get_or_create(
         product=product,
         user=request.user,
+        ordered=False,
     )
-    order_qs = Order.objects.filter(user=request.user)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.products.filter(product__slug=product.slug).exists():
             order_product.quantity += 1
             order_product.save()
             #messages.info(request, "This item quantity was updated.")
-            return redirect("main")
+            return redirect("cart")
         else:
             order.products.add(order_product)
-            return redirect("main")
+            return redirect("cart")
     else:
         order = Order.objects.create(user=request.user)
         order.products.add(order_product)
         #messages.info(request, "This item was added to your cart.")
-        return redirect("main")
+        return redirect("cart")
 
-def change_queantity(request,order_product_pk,plus):
-    orderproduct = OrderProduct.objects.get(pk=order_product_pk)
-    if(plus):
-        orderproduct.quantity += 1
+def change_quantity(request, order_product_pk, plus):
+    order_product = OrderProduct.objects.get(pk=order_product_pk)
+    if plus:
+        order_product.quantity += 1
+        order_product.save()
     else:
-        orderproduct.quantity -= 1
-    orderproduct.save()
+        order_product.quantity -= 1
+        if order_product.quantity == 0:
+            order_product.delete()
+        else:
+            order_product.save()
     return redirect("cart")
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args, **kwargs):
+        order_id = self.kwargs["order_id"]
+        order = Order.objects.get(id=order_id)
+        YOUR_DOMAIN = "http://127.0.0.1:8000"
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                {
+                    'price_data': {
+                        'currency': 'usd',
+                        'unit_amount': order.get_total()*100,#cent
+                        'product_data': {
+                            'name': "Test Order"#order.name
+                        },
+                    },
+                    'quantity': 1,
+                },
+            ],
+            metadata={
+                "order_id": order.id
+            },
+            mode='payment',
+            success_url=YOUR_DOMAIN + '/success/',
+            cancel_url=YOUR_DOMAIN + '/cancel/',
+        )
+        return JsonResponse({
+            'id': checkout_session.id
+        })
+
+
+def successPayment(request):
+    context = {}
+    context = get_user_context(context, request)
+    return render(request, "store/successpayment.html",context)
+
+def cancelPayment(request):
+    context = {}
+    context = get_user_context(context, request)
+    return render(request, "store/cancelpayment.html",context)
+
+class ProductLandingPageView(TemplateView):
+    template_name = "store/checkout.html"
+
+    def get_context_data(self, **kwargs):
+        order_id = self.kwargs["order_id"]
+        order = Order.objects.get(pk=order_id)
+        context = super(ProductLandingPageView, self).get_context_data(**kwargs)
+        context.update({
+            "order": order,
+            "STRIPE_PUBLIC_KEY": settings.STRIPE_PUBLIC_KEY,
+        })
+        context.update(csrf(self.request))
+        return context
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+    # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+
+        customer_email = session["customer_details"]["email"]
+        order_id = session["metadata"]["order_id"]
+        order = Order.objects.get(id=order_id)
+        order.ordered = True
+        order.save()
+        s = "Thanks for your purchase\nYour cart:\n"
+        i = 1
+        address = order.address
+        ss = f"New order\nAddress: state: {address.state} city: {address.city} address: {address.address} zipcode: {address.zipcode}\nCart:\n"
+
+        for order_product in order.products.all():
+            order_product.ordered = True
+            order_product.save()
+            s += f"{i}) {order_product.product.name} Price: {order_product.product.price} Count: {order_product.quantity}\n"
+            ss+= f"{i}) {order_product.product.name} Price: {order_product.product.price} Count: {order_product.quantity}\n"
+        send_mail(
+            "Order confirmation",
+            s,
+            "store13313@gmail.com",
+            [customer_email],
+            fail_silently = False,
+        )
+        send_mail(
+            "New Order",
+            ss,
+            "store13313@gmail.com",
+            ["dimonchechulov@gmail.com"],
+            fail_silently=False,
+        )
+
+
+
+    return HttpResponse(status=200)
+
+
+@csrf_exempt
+def get_address(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        order = Order.objects.get(pk=data.get('order_id'))
+        address = Address.objects.get_or_create(address=data.get('address'),state=data.get('state'),city = data.get('city'),zipcode=data.get('zipcode'))
+        order.address = address[0]
+        order.save()
+
+        return JsonResponse({"success": True})
+    else:
+        return JsonResponse({"success": False, "error": "Invalid request method"})

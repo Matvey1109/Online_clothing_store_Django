@@ -19,7 +19,7 @@
 						<th><h5>Items: <strong>{{order.products.count}}</strong></h5></th>
 						<th><h5>Total: <strong>${{order.get_total}}</strong></h5></th>
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+							<a  style="float:right; margin:5px;" class="btn btn-success" href="{{order.get_payment_url}}">Checkout</a>
 						</th>
 					</tr>
 				</table>

@@ -6,7 +6,7 @@ def get_user_context(dict,request):
     if not request.user.is_authenticated:
         ordered = 0
     else:
-        order_qs = Order.objects.filter(user=request.user)
+        order_qs = Order.objects.filter(user=request.user, ordered=False)
         if order_qs.exists():
             context["order"] = order_qs[0]
 
