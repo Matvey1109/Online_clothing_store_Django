@@ -15,6 +15,7 @@
 {% block content %}
     <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">
 	<div class="row">
+    {% with name="Tom" %}
 		{%for product in products%}
 		<div class="col-lg-4">
 			<img class="thumbnail" src="{{product.photo.url}}">
@@ -28,6 +29,7 @@
 			</div>
 		</div>
 		{%endfor%}
+    {% endwith %}
 
 
 	</div>

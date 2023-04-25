@@ -90,9 +90,13 @@ def logout_user(request):
 
 
 def gender(request, gender_slug):
+    search_input = request.GET.get('search_area')
     gender = Gender.objects.get(slug=gender_slug)
     cats = gender.categories_id.all()
-    products = Product.objects.filter(gender=gender)
+    if search_input:
+        products = Product.objects.filter(gender=gender, name__icontains=search_input)
+    else:
+        products = Product.objects.filter(gender=gender)
     context = {
             "cats": cats,
             "products": products,
@@ -103,10 +107,14 @@ def gender(request, gender_slug):
 
 
 def category(request, gender_slug,category_slug):
+    search_input = request.GET.get('search_area')
     gender = Gender.objects.get(slug=gender_slug)
     cat = Category.objects.get(slug=category_slug)
-    products = Product.objects.filter(gender=gender, cat=cat)
     cats = gender.categories_id.all()
+    if search_input:
+        products = Product.objects.filter(gender=gender, cat=cat, name__icontains=search_input)
+    else:
+        products = Product.objects.filter(gender=gender, cat=cat)
     context = {
             "cats": cats,
             "products" : products,
