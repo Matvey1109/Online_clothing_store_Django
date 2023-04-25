@@ -12,25 +12,23 @@
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
 					<div id="shipping-info">
-						<p>Shipping Information:</p>
-						<hr>
+						<p style="margin-left: 6px;">Shipping Information:</p>
 						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address..">
+							<input class="form-control" type="text" name="address" placeholder="Address">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="City..">
+							<input class="form-control" type="text" name="city" placeholder="City">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="State..">
+							<input class="form-control" type="text" name="state" placeholder="State">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
+							<input class="form-control" type="text" name="zipcode" placeholder="Zip code">
 						</div>
 					</div>
 
-					<hr>
 					{% csrf_token %}
-					<button class="btn btn-success btn-block" type="button" id="checkout-button">Checkout</button>
+					<button class="btn btn-success btn-block" type="button" id="checkout-button" style="margin-left: 5px; margin-top: 5px;">Checkout</button>
 
 				</form>
 			</div>
@@ -45,19 +43,17 @@
 		<div class="col-lg-5" style="height: 317px">
 			<div class="box-element">
 				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
-				<hr>
-				<h3>Order Summary</h3>
-				<hr>
+				<h3 style="margin-top: 10px; margin-bottom: 18px;">Order Summary</h3>
 				{%for orderproduct in order.products.all%}
 				<div class="cart-row">
 					<div style="flex:2"><img class="row-image" src="{{orderproduct.product.photo.url}}"></div>
-					<div style="flex:2">{{orderproduct.product.name}}<p>Product 1</p></div>
+					<div style="flex:2">{{orderproduct.product.name}}</div>
 					<div style="flex:1"><p>${{orderproduct.product.price}}</p></div>
 					<div style="flex:1"><p>x{{orderproduct.quantity}}</p></div>
 				</div>
-				<h5>Items:   {{order.get_total_quantity}}</h5>
-				<h5>Total:   ${{order.get_total}}</h5>
 				{%endfor%}
+                <h5>Items:   {{order.get_total_quantity}}</h5>
+				<h5>Total:   ${{order.get_total}}</h5>
 			</div>
 		</div>
 	</div>

@@ -21,6 +21,4 @@ urlpatterns = [
 	path('<slug:gender_slug>/', views.gender, name = "gender"),
 	path('<slug:gender_slug>/<slug:category_slug>',views.category, name="category"),
 	path('webhooks/stripe/', views.stripe_webhook, name='stripe-webhook'),
-
-
 ]

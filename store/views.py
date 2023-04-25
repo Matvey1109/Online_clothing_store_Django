@@ -94,8 +94,8 @@ def gender(request, gender_slug):
     cats = gender.categories_id.all()
     products = Product.objects.filter(gender=gender)
     context = {
-               "cats": cats,
-                "products": products
+            "cats": cats,
+            "products": products,
     }
     context = get_user_context(context,request)
     context["gender_selected"] = gender
@@ -106,12 +106,10 @@ def category(request, gender_slug,category_slug):
     gender = Gender.objects.get(slug=gender_slug)
     cat = Category.objects.get(slug=category_slug)
     products = Product.objects.filter(gender=gender, cat=cat)
-
     cats = gender.categories_id.all()
     context = {
-               "cats": cats,
-                "products" : products,
-
+            "cats": cats,
+            "products" : products,
     }
     context = get_user_context(context,request)
     context["gender_selected"] = gender
@@ -158,7 +156,6 @@ def change_quantity(request, order_product_pk, plus):
         else:
             order_product.save()
     return redirect("cart")
-
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
