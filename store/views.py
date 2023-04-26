@@ -290,3 +290,8 @@ def get_address(request):
         return JsonResponse({"success": True})
     else:
         return JsonResponse({"success": False, "error": "Invalid request method"})
+
+def product(request):
+    context = {}
+    context = get_user_context(context, request)
+    return render(request, "store/product.html", context)
