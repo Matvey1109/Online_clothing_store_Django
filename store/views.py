@@ -91,36 +91,37 @@ def logout_user(request):
 
 def gender(request, gender_slug):
     search_input = request.GET.get('search_area')
-    gender = Gender.objects.get(slug=gender_slug)
-    cats = gender.categories_id.all()
+    gender_ = Gender.objects.get(slug=gender_slug)
+    cats = Category.objects.all()
     if search_input:
-        products = Product.objects.filter(gender=gender, name__icontains=search_input)
+        products = Product.objects.filter(gender=gender_, name__icontains=search_input)
     else:
-        products = Product.objects.filter(gender=gender)
+        products = Product.objects.filter(gender=gender_)
     context = {
             "cats": cats,
             "products": products,
     }
     context = get_user_context(context,request)
-    context["gender_selected"] = gender
+    context["gender_selected"] = gender_
     return render(request, 'store/gender.html', context)
+
 
 
 def category(request, gender_slug,category_slug):
     search_input = request.GET.get('search_area')
-    gender = Gender.objects.get(slug=gender_slug)
+    gender_ = Gender.objects.get(slug=gender_slug)
     cat = Category.objects.get(slug=category_slug)
-    cats = gender.categories_id.all()
+    cats = Category.objects.all()
     if search_input:
-        products = Product.objects.filter(gender=gender, cat=cat, name__icontains=search_input)
+        products = Product.objects.filter(gender=gender_, cat=cat, name__icontains=search_input)
     else:
-        products = Product.objects.filter(gender=gender, cat=cat)
+        products = Product.objects.filter(gender=gender_, cat=cat)
     context = {
             "cats": cats,
             "products" : products,
     }
     context = get_user_context(context,request)
-    context["gender_selected"] = gender
+    context["gender_selected"] = gender_
     context["cat_selected"] = cat
     return render(request, 'store/category.html', context)
 
@@ -291,7 +292,10 @@ def get_address(request):
     else:
         return JsonResponse({"success": False, "error": "Invalid request method"})
 
-def product(request):
-    context = {}
+def product(request, product_slug):
+    product_ = Product.objects.get(slug=product_slug)
+    context = {
+        "product": product_
+    }
     context = get_user_context(context, request)
     return render(request, "store/product.html", context)

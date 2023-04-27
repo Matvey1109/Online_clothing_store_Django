@@ -21,14 +21,14 @@
     <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">
 	<div class="row">
 		{%for product in products%}
-		<div class="col-lg-4">
-			<img class="thumbnail" src="{{product.photo.url}}">
+		<div style="width: 274px; height: 300px;" class="col-lg-4">
+			<img style="height: 300px;" class="thumbnail" src="{{product.photo.url}}">
 			<div class="box-element product">
 				<h6><strong>{{product.name}}</strong></h6>
 				<hr>
 
 				<a  href = "{{product.get_add_url}}" class="btn btn-outline-secondary add-btn">Add to Cart</a>
-				<a class="btn btn-outline-success" href="{% url 'product' %}">View</a>
+				<a class="btn btn-outline-success" href="{% url 'product' product_slug=product.slug %}">View</a>
 				<h4 style="display: inline-block; float: right"><strong>${{product.price}}</strong></h4>
 
 			</div>
