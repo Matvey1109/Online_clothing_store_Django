@@ -24,6 +24,7 @@ class Product(models.Model):
     availability = models.CharField(max_length=1,choices = AVAILABILITY,default = '')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT)
     gender = models.ForeignKey('Gender', on_delete=models.PROTECT)
+    sizes = models.ManyToManyField('Size')
     def __str__(self):
         return self.name
 
@@ -60,6 +61,7 @@ class OrderProduct(models.Model):
     product = models.ForeignKey('Product', on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
     ordered = models.BooleanField(default=False)
+    size = models.ForeignKey('Size',on_delete=models.SET_NULL, null=True )
     def get_total_product_price(self):
         return self.quantity * self.product.price
 class Order(models.Model):
@@ -95,3 +97,9 @@ class Address(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     products = models.ManyToManyField('Product')
+
+class Size(models.Model):
+    name = models.CharField(max_length=5)
+
+    def __str__(self):
+        return self.name

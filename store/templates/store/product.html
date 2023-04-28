@@ -99,7 +99,9 @@ a
 .product-links {
     text-align: right;
 }
-
+.size{
+	text-align: left;
+}
 .product-links a {
     display: inline-block;
     margin-left: 5px;
@@ -139,10 +141,33 @@ a
 				<div style="color: black" class="product-price">${{product.price}}</div>
 				{%endif%}
 				<div class="product-links">
+
 					<a href="{{product.get_add_favorite}}"><i class="fa fa-heart"><img src="../../static/store/img/heart.png" alt="Heart Icon"></i></a>
-					<a href="{{product.get_add_url}}"><i class="fa fa-shopping-cart"><img class="cart" src="../../static/store/img/shopping-cart.png" alt="Cart Icon"></i></a>
+
 				</div>
+
 			</div>
+
+			<select name="sizes" id="sizes" >
+			{%for size in product.sizes.all%}
+            <option value="{{size.name}}">{{size.name}}</option>
+			{%endfor%}
+			</select>
+
+			<input type="button" id="addcart" value="Add to Cart"  name="" class="btn btn-outline-success add-btn">
+
+
 		</div>
 	</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementById("addcart").onclick = function() {
+  	var size = document.getElementById("sizes").value
+    window.location.href = "/add_to_cart/"+"{{product.slug}}"+"/"+size+"/";
+
+};
+});
+</script>
 {% endblock %}

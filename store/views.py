@@ -127,7 +127,8 @@ def category(request, gender_slug,category_slug):
     return render(request, 'store/category.html', context)
 
 
-def add_to_cart(request, product_slug):
+def add_to_cart(request, product_slug,size_name):
+    size = Size.objects.get(name=size_name)
     if not request.user.is_authenticated:
         #messages.info(request, "This item was added to your cart.")
         return redirect("login")
@@ -136,11 +137,12 @@ def add_to_cart(request, product_slug):
         product=product,
         user=request.user,
         ordered=False,
+        size=size,
     )
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        if order.products.filter(product__slug=product.slug).exists():
+        if order.products.filter(product__slug=product.slug,size=size).exists():
             order_product.quantity += 1
             order_product.save()
             #messages.info(request, "This item quantity was updated.")
@@ -325,3 +327,11 @@ def delete_from_favorite(request,product_pk):
     favorite.products.remove(product)
     return redirect("liked")
 
+
+def get_size(request,size_id):
+    print(size_id)
+    return redirect("cart")
+
+def get_sizee(request):
+    print("size_id")
+    return redirect("cart")

@@ -32,6 +32,7 @@
 					<div style="flex:2"></div>
 					<div style="flex:2"><strong>Item</strong></div>
 					<div style="flex:1"><strong>Price</strong></div>
+					<div style="flex:1"><strong>Size</strong></div>
 					<div style="flex:1"><strong>Quantity</strong></div>
 					<div style="flex:1"><strong>Total</strong></div>
 				</div>
@@ -40,6 +41,7 @@
 					<div style="flex:2"><img class="row-image" src="{{orderproduct.product.photo.url}}"></div>
 					<div style="flex:2"><p>{{orderproduct.product.name}}</p></div>
 					<div style="flex:1"><p>${{orderproduct.product.price}}</p></div>
+					<div style="flex:1"><p>{{orderproduct.size.name}}</p></div>
 					<div style="flex:1">
 						<p class="quantity">{{orderproduct.quantity}}</p>
 						<div class="quantity">

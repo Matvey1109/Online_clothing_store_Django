@@ -25,4 +25,5 @@ admin.site.register(Order)
 admin.site.register(Address)
 admin.site.register(OrderProduct)
 admin.site.register(Favorite)
+admin.site.register(Size)
 
