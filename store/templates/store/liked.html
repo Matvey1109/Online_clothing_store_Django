@@ -24,17 +24,16 @@
 					<div style="flex:1"><strong>Add</strong></div>
 					<div style="flex:1"><strong>Delete</strong></div>
 				</div>
-				{%for orderproduct in order.products.all%}
+				{%for product in favorite.products.all%}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{orderproduct.product.photo.url}}"></div>
-					<div style="flex:2"><p>{{orderproduct.product.name}}</p></div>
-					<div style="flex:1"><p>${{orderproduct.product.price}}</p></div>
+					<div style="flex:2"><img class="row-image" src="{{product.photo.url}}"></div>
+					<div style="flex:2"><p>{{product.name}}</p></div>
+					<div style="flex:1"><p>${{product.price}}</p></div>
 					<div style="flex:1">
                         <a href = "{{product.get_add_url}}" class="btn btn-outline-success add-btn">Add to Cart</a>
 					</div>
 					<div style="flex:1">
-                        {% getquantity order_product_pk=orderproduct.pk plus=0 as URL%}
-                        <a href = "{{URL}}" class="btn btn-outline-danger add-btn">Delete</a>
+                        <a href = "{{product.get_delete_favorite}}" class="btn btn-outline-danger add-btn">Delete</a>
                     </div>
 				</div>
 				{%endfor%}

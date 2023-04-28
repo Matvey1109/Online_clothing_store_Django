@@ -1,7 +1,7 @@
 {% extends 'store/layout.html' %}
 {% load static %}
 {% load store_tags %}
-{% block title %}{{ product.name }}{% endblock %}
+{% block title %}{% endblock %}
 
 {% block content %}
     <style>
@@ -32,6 +32,7 @@ a
     align-items: center;
     justify-content: center;
     height: 300px;
+    padding: 50px;
     background: #f0f0f0;
 }
 
@@ -124,21 +125,24 @@ a
 
     </style>
     <div class="product-card" style="box-shadow:hsl(0, 0%, 80%) 0 0 16px; border-radius: 4px">
-        <div class="product-tumb">
-            <img src="{{ product.photo.url }}" alt="">
-        </div>
-        <div class="product-details">
-            <span class="product-catagory">{{ product.gender }}, {{ product.cat }}</span>
-            <h4>{{ product.name }}</h4>
-            <p>{{ product.description }}</p>
-            <div class="product-bottom-details">
-                <div style="color: black;" class="product-price"><small style="color: black"></small>${{ product.price }}</div>
-                <div class="product-links">
-                    <a href=""><i class="fa fa-heart"><img src="../../static/store/img/heart.png" alt="Heart Icon"></i></a>
-                    <a href="{% url 'add_to_cart' product_slug=product.slug %}"><i class="fa fa-shopping-cart"><img class="cart" src="../../static/store/img/shopping-cart.png" alt="Cart Icon"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+		<div class="product-tumb">
+			<img src="{{product.photo.url}}" alt="">
+		</div>
+		<div class="product-details">
+			<span class="product-catagory">{{product.gender}}, {{product.cat}}</span>
+			<h4>{{product.name}}</h4>
+			<p>{{product.description}}</p>
+			<div class="product-bottom-details">
+				{%if product.discount%}
+				<div style="color: red" class="product-price"><small style="color: black">${{product.price_discount}}</small>${{product.price}}</div>
+				{%else%}
+				<div style="color: black" class="product-price">${{product.price}}</div>
+				{%endif%}
+				<div class="product-links">
+					<a href="{{product.get_add_favorite}}"><i class="fa fa-heart"><img src="../../static/store/img/heart.png" alt="Heart Icon"></i></a>
+					<a href="{{product.get_add_url}}"><i class="fa fa-shopping-cart"><img class="cart" src="../../static/store/img/shopping-cart.png" alt="Cart Icon"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

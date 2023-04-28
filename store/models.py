@@ -5,7 +5,6 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     middle_name = models.CharField(max_length=255, blank=True)
     phone_number = models.CharField(max_length=13)
-    adress = models.CharField(max_length=50)#must deleted
 
 
 class Product(models.Model):
@@ -17,7 +16,9 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     description = models.TextField(blank=True)
+    discount = models.BooleanField(default=False)
     price = models.IntegerField()
+    price_discount = models.IntegerField(blank=True)
     photo = models.ImageField(upload_to="photos")
     size = models.CharField(max_length=255)
     availability = models.CharField(max_length=1,choices = AVAILABILITY,default = '')
@@ -27,9 +28,15 @@ class Product(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('products', kwargs={'product_slug': self.slug})
+        return reverse('product', kwargs={'product_slug': self.slug})
     def get_add_url(self):
         return reverse('add_to_cart',kwargs={'product_slug': self.slug})
+
+    def get_add_favorite(self):
+        return reverse('add_to_favorite', kwargs={'product_slug': self.slug})
+
+    def get_delete_favorite(self):
+        return reverse('delete_from_favorite', kwargs={'product_pk': self.pk})
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
@@ -84,3 +91,7 @@ class Address(models.Model):
     city = models.CharField(max_length=100)
     address = models.CharField(max_length=100)
     zipcode = models.CharField(max_length=100)
+
+class Favorite(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    products = models.ManyToManyField('Product')
