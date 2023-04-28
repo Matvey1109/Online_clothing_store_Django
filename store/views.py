@@ -44,6 +44,8 @@ def categories(request):
 
 def liked(request):
     context = {}
+    favorite = Favorite.objects.get(user=request.user)
+    context['favorite'] = favorite
     context = get_user_context(context,request)
     return render(request, 'store/liked.html', context)
 
@@ -91,37 +93,36 @@ def logout_user(request):
 
 def gender(request, gender_slug):
     search_input = request.GET.get('search_area')
-    gender_ = Gender.objects.get(slug=gender_slug)
-    cats = Category.objects.all()
+    gender = Gender.objects.get(slug=gender_slug)
+    cats = gender.categories_id.all()
     if search_input:
-        products = Product.objects.filter(gender=gender_, name__icontains=search_input)
+        products = Product.objects.filter(gender=gender, name__icontains=search_input)
     else:
-        products = Product.objects.filter(gender=gender_)
+        products = Product.objects.filter(gender=gender)
     context = {
             "cats": cats,
             "products": products,
     }
     context = get_user_context(context,request)
-    context["gender_selected"] = gender_
+    context["gender_selected"] = gender
     return render(request, 'store/gender.html', context)
-
 
 
 def category(request, gender_slug,category_slug):
     search_input = request.GET.get('search_area')
-    gender_ = Gender.objects.get(slug=gender_slug)
+    gender = Gender.objects.get(slug=gender_slug)
     cat = Category.objects.get(slug=category_slug)
-    cats = Category.objects.all()
+    cats = gender.categories_id.all()
     if search_input:
-        products = Product.objects.filter(gender=gender_, cat=cat, name__icontains=search_input)
+        products = Product.objects.filter(gender=gender, cat=cat, name__icontains=search_input)
     else:
-        products = Product.objects.filter(gender=gender_, cat=cat)
+        products = Product.objects.filter(gender=gender, cat=cat)
     context = {
             "cats": cats,
             "products" : products,
     }
     context = get_user_context(context,request)
-    context["gender_selected"] = gender_
+    context["gender_selected"] = gender
     context["cat_selected"] = cat
     return render(request, 'store/category.html', context)
 
@@ -292,10 +293,35 @@ def get_address(request):
     else:
         return JsonResponse({"success": False, "error": "Invalid request method"})
 
-def product(request, product_slug):
-    product_ = Product.objects.get(slug=product_slug)
-    context = {
-        "product": product_
-    }
+def product(request,product_slug):
+    context = {}
+    product = Product.objects.get(slug=product_slug)
     context = get_user_context(context, request)
+    context['product'] = product
     return render(request, "store/product.html", context)
+
+def add_to_favorite(request,product_slug):
+    if not request.user.is_authenticated:
+        # messages.info(request, "This item was added to your cart.")
+        return redirect("login")
+    product = Product.objects.get(slug=product_slug)
+    favorite_qs = Favorite.objects.filter(user=request.user)
+    if favorite_qs.exists():
+        favorite = favorite_qs[0]
+        if not favorite.products.filter(slug=product.slug).exists():
+            favorite.products.add(product)
+            # messages.info(request, "This item quantity was updated.")
+        return redirect("liked")
+
+    else:
+        favorite = Favorite.objects.create(user=request.user)
+        favorite.products.add(product)
+        # messages.info(request, "This item was added to your cart.")
+        return redirect("liked")
+
+def delete_from_favorite(request,product_pk):
+    product = Product.objects.get(pk=product_pk)
+    favorite = Favorite.objects.get(user=request.user)
+    favorite.products.remove(product)
+    return redirect("liked")
+
