@@ -21,6 +21,7 @@
 					<div style="flex:2"></div>
 					<div style="flex:2"><strong>Item</strong></div>
 					<div style="flex:1"><strong>Price</strong></div>
+                    <div style="flex:1"><strong>Size</strong></div>
 					<div style="flex:1"><strong>Add</strong></div>
 					<div style="flex:1"><strong>Delete</strong></div>
 				</div>
@@ -35,10 +36,11 @@
             			<option value="{{size.name}}">{{size.name}}</option>
 						{%endfor%}
 						</select>
-
-			<input type="button" id="addcart_{{product.slug}}" value="Add to Cart" class="btn btn-outline-success add-btn"  name="">
-					</div>
-					<script>
+                    </div>
+			    <div style="flex:1">
+                    <input style="flex:1" type="button" id="addcart_{{product.slug}}" value="Add to Cart" class="btn btn-outline-success add-btn"  name="">
+                </div>
+<script>
 
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("addcart_{{product.slug}}").onclick = function() {

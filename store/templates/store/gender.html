@@ -3,16 +3,22 @@
 {% load store_tags %}
 {% block title %}Categories{% endblock %}
 {% block categories %}
-
-<ul class="nav navbar-nav w-100 flex-nowrap">
-	{% for cat in cats%}
-	<li class="nav-item active">
-		{% getcatsurl gender=gender_selected cat=cat as URL%}
-		<a class="nav-link lk" href="{{URL}}">{{cat.name}}</a>
-    </li>
-	{% endfor %}
-</ul>
-
+    <nav class="navbar navbar-expand-sm navbar-dark sec-nav">
+    <div class="container justify-content-center">
+        <ul class="nav navbar-nav w-100 flex-nowrap">
+	        {% for cat in cats%}
+	            <li class="nav-item active">
+		        {% getcatsurl gender=gender_selected cat=cat as URL%}
+		        <a class="nav-link lk" href="{{URL}}">{{cat.name}}</a>
+                </li>
+	        {% endfor %}
+        </ul>
+        <form class="d-flex" role="search">
+        <input class="form-control search-input me-2" type="search" placeholder="Search" aria-label="Search" name ="search_area" value="{{ search_input }}">
+        <button type="button" class="btn btn-dark"><img src="../../static/store/img/loupe.png" alt="Loupe Icon"></button>
+        </form>
+    </div>
+    </nav>
 {% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">

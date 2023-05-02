@@ -58,15 +58,7 @@
     </nav>
     <hr class="nav">
 
-    <nav class="navbar navbar-expand-sm navbar-dark sec-nav">
-    <div class="container justify-content-center">
-        {%block categories%}{% endblock %}
-        <form class="d-flex" role="search">
-        <input class="form-control search-input me-2" type="search" placeholder="Search" aria-label="Search" name ="search_area" value="{{ search_input }}">
-        <button type="button" class="btn btn-dark"><img src="../../static/store/img/loupe.png" alt="Loupe Icon"></button>
-        </form>
-    </div>
-    </nav>
+    {% block categories %}{% endblock %}
 
     {% block content %}
     {% endblock %}

@@ -328,10 +328,8 @@ def delete_from_favorite(request,product_pk):
     return redirect("liked")
 
 
-def get_size(request,size_id):
-    print(size_id)
+def get_size(request, size_id):
     return redirect("cart")
 
 def get_sizee(request):
-    print("size_id")
     return redirect("cart")
