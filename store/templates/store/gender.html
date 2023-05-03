@@ -13,12 +13,22 @@
                 </li>
 	        {% endfor %}
         </ul>
-        <form class="d-flex" role="search">
+        <form class="d-flex" role="search" id="search-form">
         <input class="form-control search-input me-2" type="search" placeholder="Search" aria-label="Search" name ="search_area" value="{{ search_input }}">
-        <button type="button" class="btn btn-dark"><img src="../../static/store/img/loupe.png" alt="Loupe Icon"></button>
+        <button type="submit" class="btn btn-dark"><img src="../../static/store/img/loupe.png" alt="Loupe Icon"></button>
         </form>
     </div>
     </nav>
+    <script>
+    const form = document.querySelector('#search-form');
+    const button = form.querySelector('button[type="submit"]');
+
+    button.addEventListener('click', (event) => {
+        event.preventDefault();
+        form.submit();
+    });
+    </script>
+
 {% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">

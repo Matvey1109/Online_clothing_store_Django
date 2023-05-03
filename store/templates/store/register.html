@@ -2,21 +2,39 @@
 {%load static %}
 {% block title %}{{title}}{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'store/css/RegisterLogin.css' %}">
-<h1 align = "center" class = 'title'>{{title}}</h1>
+<style>
+    .href {
+        margin-top: 1em;
+        color: gray;
+        font-size: 18px;
+        text-decoration: none;
+        position: relative;
+    }
+    .href:hover {
+        color: black;
+    }
+    .errorlist {
+        list-style: none;
+    }
+</style>
+<div style="text-align: center;">
+<h1 style="font-family: Arial , sans-serif; margin-bottom: 30px;" class = 'title'>{{title}}</h1>
+</div>
 
-<form method="post"  class='login-form'>
+<form style="font-family: Arial , sans-serif;" method="post"  class='login-form'>
     {% csrf_token %}
 
 {% for f in form %}
-    <div class="flex-row">
+    <div class="flex-row" style="padding-top: 3px;">
         <p align = "center" class = 'log-input'>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
+        <div style="text-align: center; text-decoration: none;" class="form-error">{{ f.errors }}</div>
     </div>
 {% endfor %}
 
-    <input style="width: 400px; border-radius: 10px;" class='lf--submit' type='submit' value='REGISTER'>
+    <div style="text-align: center;">
+        <input style="width: 400px; border-radius: 10px; text-align: center; font-family: Arial , sans-serif; padding-top: 6px; margin-top: 7px;" class="btn btn-dark" type="submit" value="REGISTER">
+    </div>
 </form>
-<div style='text-align:center;'><a class='href' href="{%url 'login'%}">Already have an account? Log in</a></div>
+<div style='text-align:center; padding-top: 30px;'><a class='href' href="{%url 'login'%}">Already have an account? Log in</a></div>
 
 {% endblock %}

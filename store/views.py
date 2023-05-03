@@ -44,8 +44,9 @@ def categories(request):
 
 def liked(request):
     context = {}
-    favorite = Favorite.objects.get(user=request.user)
-    context['favorite'] = favorite
+    if request.user.is_authenticated:
+        favorite = Favorite.objects.get(user=request.user)
+        context['favorite'] = favorite
     context = get_user_context(context,request)
     return render(request, 'store/liked.html', context)
 
