@@ -22,7 +22,6 @@ from .models import *
 from .forms import *
 
 def main(request):
-
     context = {}
     context = get_user_context(context,request)
     return render(request, 'store/main.html', context)
@@ -296,12 +295,27 @@ def get_address(request):
     else:
         return JsonResponse({"success": False, "error": "Invalid request method"})
 
-def product(request,product_slug):
-    context = {}
+def product(request, product_slug):
     product = Product.objects.get(slug=product_slug)
+    comments = product.get_comments()
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.product = product
+        comment.rating = form.cleaned_data['rating']
+        comment.save()
+        messages.success(request, 'Your comment was added.')
+        return redirect('product', product_slug=product_slug)
+
+    context = {
+        'product': product,
+        'comments': comments,
+        'form': form,
+    }
     context = get_user_context(context, request)
-    context['product'] = product
-    return render(request, "store/product.html", context)
+    return render(request, 'store/product.html', context)
+
 
 def add_to_favorite(request,product_slug):
     if not request.user.is_authenticated:

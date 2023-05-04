@@ -27,3 +27,12 @@ class LoginUserForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'lf--input', 'placeholder': 'Username', 'style': 'width: 400px; text-align: center; border: 1px solid black; border-radius: 10px; height: 33px;'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'lf--input', 'placeholder':'Password', 'style': 'width: 400px; text-align: center; border: 1px solid black; border-radius: 10px; height: 33px;'}))
 
+
+class CommentForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
+    rating = forms.IntegerField(widget=forms.NumberInput(attrs={'min': '1', 'max': '5', 'step': '1'}), required=True)
+
+    class Meta:
+        model = Comment
+        fields = ('text', 'rating')
+
