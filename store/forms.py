@@ -29,10 +29,10 @@ class LoginUserForm(AuthenticationForm):
 
 
 class CommentForm(forms.ModelForm):
-    text = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
     rating = forms.IntegerField(widget=forms.NumberInput(attrs={'min': '1', 'max': '5', 'step': '1'}), required=True)
+    text = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}))
 
     class Meta:
         model = Comment
-        fields = ('text', 'rating')
+        fields = ('rating', 'text')
 
