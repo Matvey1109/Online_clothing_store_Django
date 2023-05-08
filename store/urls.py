@@ -5,9 +5,8 @@ urlpatterns = [
 	path('', views.main, name="main"),
 	path('cart/', views.cart, name="cart"),
 	path('checkout/', views.checkout, name="checkout"),
-	path('categories/', views.categories, name="categories"),
 	path('liked/', views.liked, name="liked"),
-	path('profile/', views.profile, name="profile"),
+	#path('profile/', views.profile, name="profile"),
 	path('login/',views.LoginUser.as_view(), name="login"),
 	path('register/',views.RegisterUser.as_view(), name="register"),
 	path('logout/',views.logout_user, name="logout"),
@@ -24,6 +23,4 @@ urlpatterns = [
 	path('category/<slug:gender_slug>/<slug:category_slug>',views.category, name="category"),
 	path('webhooks/stripe/', views.stripe_webhook, name='stripe-webhook'),
 	path('product/<slug:product_slug>/',views.product,name='product'),
-	path('get_size/<int:size_id>/',views.get_size,name="get_size"),
-	path('get_size/',views.get_sizee,name="get_sizee"),
 ]

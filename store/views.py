@@ -28,6 +28,8 @@ def main(request):
     return render(request, 'store/main.html', context)
 
 def cart(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
     context = {}
     context = get_user_context(context,request)
     return render(request, 'store/cart.html', context)
@@ -37,22 +39,24 @@ def checkout(request):
     context = get_user_context(context,request)
     return render(request, 'store/checkout.html', context)
 
-def categories(request):
-    context = {}
-    context = get_user_context(context,request)
-    return render(request, 'store/categories.html', context)
 
 def liked(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
     context = {}
-    favorite = Favorite.objects.get(user=request.user)
+    try:
+        favorite = Favorite.objects.get(user=request.user)
+    except:
+        favorite = Favorite.objects.create(user=request.user)
     context['favorite'] = favorite
     context = get_user_context(context,request)
     return render(request, 'store/liked.html', context)
 
-def profile(request):
-    context = {}
-    context = get_user_context(context,request)
-    return render(request, 'store/profile.html', context)
+
+# def profile(request):
+#     context = {}
+#     context = get_user_context(context,request)
+#     return render(request, 'store/profile.html', context)
 
 
 class RegisterUser(CreateView):
@@ -286,7 +290,7 @@ def stripe_webhook(request):
 def get_address(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        order = Order.objects.get(pk=data.get('order_id'))
+        order = Order.objects.get(pk=data.get("order_id"))
         address = Address.objects.get_or_create(address=data.get('address'),state=data.get('state'),city = data.get('city'),zipcode=data.get('zipcode'))
         order.address = address[0]
         order.save()
@@ -328,10 +332,3 @@ def delete_from_favorite(request,product_pk):
     return redirect("liked")
 
 
-def get_size(request,size_id):
-    print(size_id)
-    return redirect("cart")
-
-def get_sizee(request):
-    print("size_id")
-    return redirect("cart")

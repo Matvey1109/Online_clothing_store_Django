@@ -28,7 +28,7 @@
 				<hr>
 
 
-				<a class="btn btn-outline-success" href="{{product.get_add_url}}">View</a>
+				<a class="btn btn-outline-success" href="{% url 'product' product_slug=product.slug %}">View</a>
 				<h4 style="display: inline-block; float: right"><strong>${{product.price}}</strong></h4>
 
 			</div>
