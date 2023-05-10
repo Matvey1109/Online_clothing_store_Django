@@ -53,10 +53,6 @@ def liked(request):
     return render(request, 'store/liked.html', context)
 
 
-# def profile(request):
-#     context = {}
-#     context = get_user_context(context,request)
-#     return render(request, 'store/profile.html', context)
 
 
 class RegisterUser(CreateView):
@@ -303,6 +299,10 @@ def product(request, product_slug):
     product = Product.objects.get(slug=product_slug)
     comments = product.get_comments()
     form = CommentForm(request.POST or None)
+    if form.is_valid() and not request.user.is_authenticated:
+        messages.info(request, 'You must log in to your account to leave a review.')
+        return redirect('login')
+
     if form.is_valid():
         comment = form.save(commit=False)
         comment.user = request.user

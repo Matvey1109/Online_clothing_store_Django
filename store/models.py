@@ -21,7 +21,6 @@ class Product(models.Model):
     price = models.IntegerField()
     price_discount = models.IntegerField(blank=True)
     photo = models.ImageField(upload_to="photos")
-    size = models.CharField(max_length=255)
     availability = models.CharField(max_length=1,choices = AVAILABILITY,default = '')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT)
     gender = models.ForeignKey('Gender', on_delete=models.PROTECT)
@@ -31,8 +30,8 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('product', kwargs={'product_slug': self.slug})
-    def get_add_url(self):
-        return reverse('add_to_cart',kwargs={'product_slug': self.slug})
+    #def get_add_url(self):
+    #    return reverse('add_to_cart',kwargs={'product_slug': self.slug})
 
     def get_add_favorite(self):
         return reverse('add_to_favorite', kwargs={'product_slug': self.slug})
