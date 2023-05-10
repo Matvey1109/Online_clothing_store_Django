@@ -11,15 +11,27 @@
 			<div class="box-element">
 
 				<a  class="btn btn-outline-dark" href="{% url 'main' %}">&#x2190; Continue Shopping</a>
-
 				<br>
 				<br>
+                <form method="GET" action="{% url 'cart' %}">
+                    <input type="text" name="promo_code" placeholder="Enter promo code">
+                    <button type="submit">Apply</button>
+                    {% if order.discount_percent %}
+                        <button type="submit" name="reset_promo" value="true">Reset Promo Code</button>
+                    {% endif %}
+                </form>
 				<table class="table">
 					<tr>
 						<th><h5>Items: <strong>{{order.products.count}}</strong></h5></th>
-						<th><h5>Total: <strong>${{order.get_total}}</strong></h5></th>
+						{% if order.discount_percent %}
+                            <th><h5>Total without discount: <strong>${{ order.get_total_without_disc }}</strong></h5></th>
+                            <th><h5>Discount: <strong>{{ order.discount_percent }}%</strong></h5></th>
+                            <th><h5>Total: <strong>${{ order.get_total }}</strong></h5></th>
+                        {% else %}
+                            <th><h5>Total: <strong>${{ order.get_total }}</strong></h5></th>
+                        {% endif %}
 						<th>
-							<a  style="float:right; margin:5px;" class="btn btn-success" href="{{order.get_payment_url}}">Checkout</a>
+							<a style="float:right; margin:5px;" class="btn btn-success" href="{{order.get_payment_url}}">Checkout</a>
 						</th>
 					</tr>
 				</table>

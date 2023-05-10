@@ -68,16 +68,27 @@ class OrderProduct(models.Model):
     size = models.ForeignKey('Size',on_delete=models.SET_NULL, null=True )
     def get_total_product_price(self):
         return self.quantity * self.product.price
+
 class Order(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     products = models.ManyToManyField('OrderProduct')
     time_create = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
     address = models.ForeignKey('Address', on_delete=models.SET_NULL, blank=True, null=True)
+    promo_code = models.CharField(max_length=50, blank=True)
+    discount_percent = models.IntegerField(default=0)
+
     def __str__(self):
         return self.user.username
 
     def get_total(self):
+        total = 0
+        for order_item in self.products.all():
+            total += order_item.get_total_product_price()
+        discount = total * self.discount_percent / 100
+        return int(total - discount)
+
+    def get_total_without_disc(self):
         total = 0
         for order_item in self.products.all():
             total += order_item.get_total_product_price()
@@ -88,9 +99,9 @@ class Order(models.Model):
         for order_item in self.products.all():
             quantity += order_item.quantity
         return quantity
+
     def get_payment_url(self):
         return reverse('landing', kwargs={'order_id': self.pk})
-
 
 class Address(models.Model):
     state = models.CharField(max_length=100)

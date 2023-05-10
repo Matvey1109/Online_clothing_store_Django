@@ -8,7 +8,6 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth import logout, login
 from django.contrib.auth.views import LoginView
-
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
@@ -21,6 +20,7 @@ from .utils import *
 from .models import *
 from .forms import *
 
+
 def main(request):
 
     context = {}
@@ -30,8 +30,23 @@ def main(request):
 def cart(request):
     if not request.user.is_authenticated:
         return redirect("login")
+
     context = {}
-    context = get_user_context(context,request)
+    context = get_user_context(context, request)
+    promo_code = request.GET.get('promo_code')
+
+    if 'reset_promo' in request.GET:
+        order = context['order']
+        order.discount_percent = 0
+        order.save()
+
+    if promo_code:
+        discount_percent = apply_promo_code(promo_code)
+        if discount_percent:
+            order = context['order']
+            order.discount_percent = discount_percent
+            order.save()
+
     return render(request, 'store/cart.html', context)
 
 def checkout(request):
@@ -51,8 +66,6 @@ def liked(request):
     context['favorite'] = favorite
     context = get_user_context(context,request)
     return render(request, 'store/liked.html', context)
-
-
 
 
 class RegisterUser(CreateView):
@@ -276,9 +289,6 @@ def stripe_webhook(request):
             ["dimonchechulov@gmail.com"],
             fail_silently=False,
         )
-
-
-
     return HttpResponse(status=200)
 
 
@@ -346,4 +356,9 @@ def delete_from_favorite(request,product_pk):
     favorite.products.remove(product)
     return redirect("liked")
 
-
+def apply_promo_code(promo_code):
+    dict_of_codes = {'CLOTHES': 10, 'SUMMER20': 20}
+    if promo_code in dict_of_codes:
+        return dict_of_codes[promo_code]
+    else:
+        return None
