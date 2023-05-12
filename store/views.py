@@ -22,10 +22,13 @@ from .forms import *
 
 
 def main(request):
-
-    context = {}
-    context = get_user_context(context,request)
+    products = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    context = get_user_context(context, request)
     return render(request, 'store/main.html', context)
+
 
 def cart(request):
     if not request.user.is_authenticated:

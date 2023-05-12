@@ -37,9 +37,9 @@
 {% block content %}
 
     <link rel="stylesheet" href="{% static 'store/css/CategoriesCartCheckout.css' %}">
-	<div class="row">
+	<div style="display: flex; flex-wrap: wrap; width: 90%; margin: 50px auto;" class="row">
 		{%for product in products%}
-		<div style="width: 274px; height: 300px;" class="col-lg-4">
+		<div style="width: 274px; height: 300px; flex-basis: 25%; max-width: 274px; margin-bottom: 112px;" class="col-lg-4">
 			<img style="height: 300px;" class="thumbnail" src="{{product.photo.url}}">
 			<div class="box-element product">
 				<h6><strong>{{product.name}}</strong></h6>
