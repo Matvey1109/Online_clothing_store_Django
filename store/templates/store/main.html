@@ -158,19 +158,21 @@
           </div>
         </li>
       {% endfor %}
-      <div class="carousel-dots">
-        {% for product in products|slice:"2:6" %}
-          <label for="product-{{ product.id }}" class="carousel-dot" id="product-dot-{{ product.id }}"></label>
-        {% endfor %}
-      </div>
+        <div class="carousel-dots">
+          {% for product in products|slice:"2:6" %}
+            <label for="product-{{ product.id }}" class="carousel-dot {% if forloop.first %}selected{% endif %}" id="product-dot-{{ product.id }}"></label>
+          {% endfor %}
+        </div>
     </ul>
   </div>
 </div>
 
 <script>
   const dotLabels = document.querySelectorAll('.carousel-dot');
+  const prevButton = document.querySelectorAll('.prev-slide');
+  const nextButton = document.querySelectorAll('.next-slide');
 
-  dotLabels.forEach((label) => {
+  dotLabels.forEach((label, index) => {
     label.addEventListener('click', () => {
       dotLabels.forEach((label) => {
         label.classList.remove('selected');
@@ -178,7 +180,35 @@
       label.classList.add('selected');
     });
   });
+
+  prevButton.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      const currentDot = dotLabels[index];
+      const previousDot = dotLabels[index - 1] || dotLabels[0];
+
+      dotLabels.forEach((label) => {
+        label.classList.remove('selected');
+      });
+
+      previousDot.classList.add('selected');
+    });
+  });
+
+  nextButton.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      const currentDot = dotLabels[index];
+      const nextDot = dotLabels[index + 1] || dotLabels[3];
+
+      dotLabels.forEach((label) => {
+        label.classList.remove('selected');
+      });
+
+      nextDot.classList.add('selected');
+    });
+  });
 </script>
+
+
 
 
 {% endblock %}
