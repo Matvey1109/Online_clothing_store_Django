@@ -191,7 +191,7 @@ class CreateCheckoutSessionView(View):
     def post(self, request, *args, **kwargs):
         order_id = self.kwargs["order_id"]
         order = Order.objects.get(id=order_id)
-        YOUR_DOMAIN = "http://127.0.0.1:8000"
+        YOUR_DOMAIN = "https://web-production-e5b3.up.railway.app"
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[
