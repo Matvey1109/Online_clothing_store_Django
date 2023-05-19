@@ -54,6 +54,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://*.web-production-e5b3.up.railway.app/']
 ROOT_URLCONF = 'internet_shop.urls'
 
 TEMPLATES = [
