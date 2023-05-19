@@ -31,7 +31,7 @@
 					<div style="flex:2"><p>{{product.name}}</p></div>
 					<div style="flex:1"><p>${{product.price}}</p></div>
 					<div style="flex:1">
-						<select name="sizes" id="sizes" >
+						<select name="sizes" id="{{product.name}}">
 						{%for size in product.sizes.all%}
             			<option value="{{size.name}}">{{size.name}}</option>
 						{%endfor%}
@@ -44,7 +44,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("addcart_{{product.slug}}").onclick = function() {
-  	var size = document.getElementById("sizes").value;
+  	var size = document.getElementById("{{product.name}}").value;
   	console.log(size);
     window.location.href = "/add_to_cart/"+"{{product.slug}}"+"/"+size+"/";
 
