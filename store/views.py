@@ -173,16 +173,18 @@ def add_to_cart(request, product_slug,size_name):
         return redirect("cart")
 
 def change_quantity(request, order_product_pk, plus):
-    order_product = OrderProduct.objects.get(pk=order_product_pk)
-    if plus:
-        order_product.quantity += 1
-        order_product.save()
-    else:
-        order_product.quantity -= 1
-        if order_product.quantity == 0:
-            order_product.delete()
-        else:
+    order_products = OrderProduct.objects.filter(pk=order_product_pk)
+    if order_products.exists():
+        order_product = order_products[0]
+        if plus:
+            order_product.quantity += 1
             order_product.save()
+        else:
+            order_product.quantity -= 1
+            if order_product.quantity == 0:
+                order_product.delete()
+            else:
+                order_product.save()
     return redirect("cart")
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
